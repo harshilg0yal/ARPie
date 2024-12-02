@@ -1,0 +1,17 @@
+# Ignore everything
+*
+
+# Unignore directories
+!*/
+
+# Unignore files with extensions
+!*.*
+
+# Re-ignore .vscode, build, bin directories
+.vscode/
+build/
+bin/
+
+# Re-ignore test.cpp
+test.cpp
+
