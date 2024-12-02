@@ -15,3 +15,7 @@ bin/
 # Re-ignore test.cpp
 test.cpp
 
+# Ignore .pcap/ .pcapng /.snoop files
+*.pcap
+*.pcapng
+*.snoop
