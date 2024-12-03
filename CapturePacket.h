@@ -56,6 +56,13 @@ static void onPacketArrives(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, 
     pcpp::Packet parsedPacket (packet);
     stats->ConsumePacket(parsedPacket);
 }
+static bool onPacketArrivesBlockingMode(pcpp::RawPacket* packet, pcpp::PcapLiveDevice* dev, void* cookie)
+{
+    auto *stats = static_cast<PacketStats*>(cookie);
+    pcpp::Packet parsedPacket(packet);
+    stats->ConsumePacket(parsedPacket);
+    return false;
+}
 void CapturePackets()
 {
     std::string interfaceIPAddr="192.168.1.9";
@@ -93,16 +100,29 @@ void CapturePackets()
 
     std::cout<<"Results: " << std::endl;
     stats.printToConsole();
+    stats.clear();
 
     //Asynchronous Packet capture using a packet list (Vector)
     std::cout << std::endl << "Starting capture with packet vector..." << std::endl;
     pcpp::RawPacketVector packetVec;
     dev->startCapture(packetVec);
     pcpp::multiPlatformSleep(10);
+    for(const auto& packet: packetVec)
+    {
+        pcpp::Packet parsedPacket(packet);
+        stats.ConsumePacket(parsedPacket);
+    }
+    std::cout<<"Results: " << std::endl;
+    stats.printToConsole();
     dev->stopCapture();
 
     //Synchronous Packet Capture
+    std::cout<<std::endl << "Starting capture in blocking mode..."<<std::endl;
+    stats.clear();
 
+    dev->startCaptureBlockingMode(onPacketArrivesBlockingMode,&stats,10);
 
+    std::cout<<"Results: "<<std::endl;
+    stats.printToConsole();
 
 }
