@@ -11,6 +11,7 @@
 .vscode/
 build/
 bin/
+cmake-build-debug
 
 # Re-ignore test.cpp
 test.cpp
