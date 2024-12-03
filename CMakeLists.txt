@@ -15,10 +15,11 @@ link_directories(/usr/local/lib)
 add_definitions(-D_GLIBCXX_USE_CXX11_ABI=1)
 
 # Add the executable
-add_executable(${PROJECT_NAME} test.cpp
-        ParsePacket.h CapturePacket.h
+add_executable(${PROJECT_NAME}
+        ParsePacket.h 
+        CapturePacket.h
         ListInterfaces.h
-        test.cpp)
+        main.cpp)
 
 # Link the necessary libraries
 target_link_libraries(${PROJECT_NAME} Pcap++ Packet++ Common++ pcap)
