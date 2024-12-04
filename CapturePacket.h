@@ -87,6 +87,7 @@ void CapturePackets(pcpp::PcapLiveDevice* interface) {
         std::cerr << "Cannot open device" << std::endl;
         return;
     }
+    std::cout<<std::endl;
 
     PacketStats stats;
     std::string opt1("1. Asynchronous packet capture using callback function");
@@ -96,7 +97,7 @@ void CapturePackets(pcpp::PcapLiveDevice* interface) {
     std::string question("Please select the type of packet capture from the following options :");
 
     auto askQuestion = [question, opt1, opt2, opt3]() {
-        std::cout << question << std::endl;
+        std::cout << std::endl<<question << std::endl<<std::endl;
         std::cout << opt1 << std::endl
                   << opt2 << std::endl
                   << opt3 << std::endl;
@@ -108,20 +109,24 @@ void CapturePackets(pcpp::PcapLiveDevice* interface) {
 
     int opt = askQuestion();
 
-    auto checkOption = [opt]() {
+    auto checkOption = [&opt]() {
         if (opt == 1 || opt == 2 || opt == 3) {
             return opt;
         } else {
-            std::cout << "Wrong options selected. Please select a valid option i.e. 1, 2 or 3" << std::endl;
+            std::cout << "Wrong options selected. Please select a valid option i.e., 1, 2 or 3" << std::endl;
             return -1;
         }
     };
 
     while (true) {
         int flag = checkOption();
-        if (flag != -1) break;
-        else opt = askQuestion();
+        if (flag != -1) {
+            opt = flag; // Update opt with the valid input
+            break;
+        }
+        opt = askQuestion(); // Re-ask the question if the input is invalid
     }
+
 
     //Asynchronous packet capture using callback function
     auto startAsyncCapture = [&interface, &stats]() {
