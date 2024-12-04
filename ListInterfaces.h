@@ -1,14 +1,17 @@
 #include <iostream>
+#include <unordered_map>
 #include "PcapLiveDeviceList.h"
 
-void listInterface() {
+std::unordered_map<int,pcpp::PcapLiveDevice*> listInterface() {
     auto interfaces = pcpp::PcapLiveDeviceList::getInstance().getPcapLiveDevicesList();
     int interfaceCount = 1;
 
     std::cout << "Interfaces found:" << std::endl;
+    std::unordered_map<int,pcpp::PcapLiveDevice*> interface_map;
 
     for (auto interface : interfaces) {
         std::cout << "----------------------------------------" << std::endl;
+        interface_map[interfaceCount]=interface;
         std::cout << interfaceCount++ << ". Interface Name: " << interface->getName() << std::endl;
 
         // Description
@@ -60,4 +63,6 @@ void listInterface() {
     }
     std::cout << "----------------------------------------" << std::endl;
     std::cout << "Total Interfaces Found: " << interfaceCount-1 << std::endl;
+
+    return interface_map;
 }
