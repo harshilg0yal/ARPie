@@ -38,6 +38,15 @@ void simulateFlood(const std::function<pcpp::Packet()>& packetBuilder,pcpp::Pcap
         thread.join();
     }
 }
+    pcpp::IPv4Address generateRandomIp()
+    {
+    std::random_device rd;
+    std::mt19937_64 gen(rd());
+    std::uniform_int_distribution <> dist (1,254);
+    return pcpp::IPv4Address(std::to_string(dist(gen)) + "." + std::to_string(dist(gen)) + "." +
+                                 std::to_string(dist(gen)) + "." + std::to_string(dist(gen)));
+    }
+
     //SYN flood packet builder
     pcpp::Packet buildSYNPacket(const pcpp::MacAddress* srcMac, const pcpp::MacAddress* dstMac,
                                 const pcpp::IPv4Address* srcIP, const pcpp::IPv4Address* dstIP){
