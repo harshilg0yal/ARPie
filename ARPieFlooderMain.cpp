@@ -5,7 +5,7 @@ int main(int argc,char* argv[])
 
     std::string targetIp, interfaceName,floodType;
     int packetCount,threadCount;
-    if(argc != 5)
+    if(argc != 6)
     {
         std::cout<<"You can execute this directly using \""<<argv[0]
         <<"{Target IP} {Interface Name} {Protocol}\""<<std::endl
