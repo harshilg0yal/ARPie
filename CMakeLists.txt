@@ -19,7 +19,9 @@ add_executable(${PROJECT_NAME}
         ParsePacket.h 
         CapturePacket.h
         ListInterfaces.h
-        main.cpp)
+        main.cpp
+        floodie.h
+        ARPieFlooderMain.cpp)
 
 # Link the necessary libraries
 target_link_libraries(${PROJECT_NAME} Pcap++ Packet++ Common++ pcap)
