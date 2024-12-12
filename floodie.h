@@ -14,7 +14,13 @@
 #include <chrono>
 #include <vector>
 #include <cstdlib>
+
+#ifdef _WIN32
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#else
 #include <netinet/in.h>
+#endif
 
 void simulateFlood(const std::function<pcpp::Packet()>& packetBuilder,pcpp::PcapLiveDevice* dev, int packetCount,int threadCount = 1) {
     auto floodTask = [&](int count) {
